@@ -1,4 +1,4 @@
-import { formatingTime } from "../../helpers";
+import { formatingTime, randomChoose } from "../../helpers";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import {

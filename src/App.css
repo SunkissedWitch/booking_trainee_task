@@ -1,5 +1,12 @@
+.paper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
 .frame {
-  width: 660px;
+  width: 490px;
   display: inline-flex;
   flex-wrap: wrap;
   gap: 20px;

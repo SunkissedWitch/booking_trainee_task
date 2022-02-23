@@ -3,7 +3,6 @@ import { CoundownTimer } from "./features/counter/countdownTimer.js";
 import { useSelector, useDispatch } from 'react-redux';
 import { 
   Card,
-  CardActions, 
   CardContent, 
   Button, 
   CardHeader 
@@ -24,35 +23,35 @@ const booking = (id) => {
 }
 
 
+
+
 export const CardBox = (props) => {
   const { item: ID } = props;
 
   const dispatch = useDispatch();
   const all = useSelector(allExistingCounters);
 
-  console.log(`${ID}`, all[ID]?.counting);
+  console.log(`${ID}`, all[ID]);
   
   const [startCountdown, setStartCountdown] = useState(() => booking(all[ID]));
   const onClickCall = (prop) => {
     dispatch(addNewCounter({ID: prop}));
     setStartCountdown(true);
+    console.log("click button")
   }
   
   return (
-  <Card sx={{ width: 200, height: 200 }}>
-    <CardHeader title={ID}>
+  <Card sx={{ width: 150, height: 150 }}>
+    <CardHeader title={ID + 1}>
     </CardHeader>
 
-   {!startCountdown && 
-     <CardActions>
-      <Button onClick={() => onClickCall(ID)}>Book now</Button>
-    </CardActions>}
-    
-    {startCountdown && 
     <CardContent>
-      <CoundownTimer ID={ID} />
+      {
+        startCountdown
+          ? <CoundownTimer ID={ID} />
+          : <Button onClick={() => onClickCall(ID)}>Book now</Button>
+      }
     </CardContent> 
-    }
   </Card>
   )
 }
