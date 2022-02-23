@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { SubmitButton } from './buttonSubmit';
 
 import { randomChoose } from "./helpers";
+import { Button } from '@mui/material';
 
 
 function App() {
@@ -28,7 +29,11 @@ function App() {
       </div>
 
       <div>
-        {rStatus && <SubmitButton handleClick={() => handleClick()} />}
+        {
+          rStatus 
+            ? <SubmitButton handleClick={() => handleClick()} />
+            : <Button variant="contained" size="large" disabled> Submit </Button>
+        }
       </div>
     </div>
   );

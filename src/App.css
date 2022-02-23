@@ -1,7 +1,9 @@
 .paper {
+  width: 80%;
+  margin: auto;
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: center;
 }
 
@@ -13,6 +15,12 @@
 
   justify-content: center;
 }
-.frame > div {
-  background-color: rgb(111, 212, 86);
+.free {
+  background-color: rgb(111, 212, 86) !important;
+}
+.reserved {
+  background-color: yellow !important;
+}
+.booked {
+  background-color: crimson !important;
 }

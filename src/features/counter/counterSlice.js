@@ -4,12 +4,10 @@ const SECONDS = 30;
 
 export const boxes = Array.from(Array(9), (_, i) => ( {id: i, status: 'free'} ));
 
-
 const initialState = {
   counters: boxes,
   reserve: false,
 };
-console.log("initialState", initialState) 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
 // will call the thunk with the `dispatch` function as the first argument. Async
@@ -30,20 +28,38 @@ export const counterSlice = createSlice({
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
 
-    addNewCounter: (state, action) => {
-      const newCounterId = action.payload.ID;
+    setStatusReserved: (state, action) => {
+      const counterId = action.payload.ID;
       const date = new Date().getTime() + SECONDS * 1000;
-      state.counters[newCounterId] = { ...state.counters[newCounterId], time: date, counting: true, status: "reserved" };
+
+      state.counters[counterId] = { 
+        ...state.counters[counterId],
+        time: date, 
+        counting: true, 
+        status: "reserved" 
+      };
+
       state.reserve = true;
-      console.log(state.reserve);
     },
 
-    clearCounter: (state, action) => {
+    setStatusFree: (state, action) => {
       const counterId = action.payload.ID;
       // const status=true ? "booked" : "canceled";
-      state.counters[counterId] = { ...state.counters[counterId], time: 0, counting: false};
+      state.counters[counterId] = {
+        ...state.counters[counterId],
+        time: 0, 
+        counting: false, 
+        status: "free" 
+      };
+      
+      state.reserve = false;
     },
 
+    setStatusBooked: (state, action) => {
+      const counterId = action.payload.ID;
+      state.counters[counterId] = { ...state.counters[counterId], time: 0, counting: false, status: "booked" };
+      state.reserve = false;
+    },
     // increment: (state) => {
     //   // Redux Toolkit allows us to write "mutating" logic in reducers. It
     //   // doesn't actually mutate the state because it uses the Immer library,
@@ -73,7 +89,7 @@ export const counterSlice = createSlice({
   // },
 });
 
-export const { half, addNewCounter, clearCounter } = counterSlice.actions;
+export const { half, setStatusReserved, setStatusFree } = counterSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of

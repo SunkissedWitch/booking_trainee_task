@@ -8,9 +8,11 @@ import {
   CardHeader 
 } from '@mui/material';
 
+import './App.css';
+
 import {
   allExistingCounters,
-  addNewCounter,
+  setStatusReserved,
 } from './features/counter/counterSlice';
 
 const booking = (id) => {
@@ -23,33 +25,36 @@ const booking = (id) => {
 }
 
 
-
-
 export const CardBox = (props) => {
   const { item: ID } = props;
 
   const dispatch = useDispatch();
   const all = useSelector(allExistingCounters);
+  const currentID = all[ID];
 
-  console.log(`${ID}`, all[ID]);
+  console.log(`${currentID.id}`, currentID);
+
+  const cardColor = currentID.status;
   
   const [startCountdown, setStartCountdown] = useState(() => booking(all[ID]));
   const onClickCall = (prop) => {
-    dispatch(addNewCounter({ID: prop}));
+    dispatch(setStatusReserved({ID: prop}));
     setStartCountdown(true);
     console.log("click button")
   }
   
   return (
-  <Card sx={{ width: 150, height: 150 }}>
+  <Card 
+  className={cardColor} 
+  sx={{ width: 150, height: 150 }}>
     <CardHeader title={ID + 1}>
     </CardHeader>
 
-    <CardContent>
+    <CardContent sx={{ textAlign: 'center' }}>
       {
         startCountdown
           ? <CoundownTimer ID={ID} />
-          : <Button onClick={() => onClickCall(ID)}>Book now</Button>
+          : <Button variant="outlined" onClick={() => onClickCall(ID)}>Book now</Button>
       }
     </CardContent> 
   </Card>

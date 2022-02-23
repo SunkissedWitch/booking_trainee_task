@@ -3,8 +3,9 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import {
   allExistingCounters,
-  clearCounter,
+  setStatusFree,
 } from '../../features/counter/counterSlice';
+import { Typography } from "@mui/material";
 
 
 export function CoundownTimer(props) {
@@ -24,7 +25,7 @@ export function CoundownTimer(props) {
     if (counter <= 0) {
       console.log("stop count");
       setStartCountdown(false);
-      dispatch(clearCounter({ID: ID}));
+      dispatch(setStatusFree({ID: ID}));
       return;
     }
     const timer = counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
@@ -32,8 +33,8 @@ export function CoundownTimer(props) {
   }, [counter, startCountdown]); 
 
   return (
-    <div>
-      <div>{formatingTime(counter)}</div>
-    </div>
+    <Typography>
+     {formatingTime(counter)}
+    </Typography>
   );
 }

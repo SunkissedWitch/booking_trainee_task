@@ -8,7 +8,7 @@ return (
     <Button 
       variant="contained" 
       size="large" 
-      onClick={() => handleClick()}>
+      onClick={handleClick}>
         Submit
       </Button>
   )
