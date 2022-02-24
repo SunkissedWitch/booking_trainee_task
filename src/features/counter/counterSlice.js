@@ -2,7 +2,10 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { fetchStatus } from './counterAPI';
 const SECONDS = 30;
 
-export const boxes = Array.from(Array(9), (_, i) => ( {id: i, status: 'free'} ));
+export const boxes = Array.from(
+  Array(9), (_, i) => ( {
+    id: i,
+    status: 'free'} ));
 
 const initialState = {
   counters: boxes,
@@ -36,30 +39,41 @@ export const counterSlice = createSlice({
         ...state.counters[counterId],
         time: date, 
         counting: true, 
-        status: "reserved" 
+        status: 'reserved'
       };
-
-      state.reserve = true;
     },
 
     setStatusFree: (state, action) => {
       const counterId = action.payload.ID;
-      // const status=true ? "booked" : "canceled";
+      // const status=true ? "sold" : "canceled";
       state.counters[counterId] = {
         ...state.counters[counterId],
         time: 0, 
         counting: false, 
-        status: "free" 
+        status: 'free'
       };
-      
+
       state.reserve = false;
     },
 
     setStatusBooked: (state, action) => {
       const counterId = action.payload.ID;
-      state.counters[counterId] = { ...state.counters[counterId], time: 0, counting: false, status: "booked" };
+      state.counters[counterId] = { 
+        ...state.counters[counterId],
+        time: 0,
+        counting: false, 
+        status: 'sold'
+      };
       state.reserve = false;
     },
+
+    enableButton: (state) => {
+      state.reserve = true;
+    },
+
+    disableButton: (state) => {
+      state.reserve = false;
+    }
     // increment: (state) => {
     //   // Redux Toolkit allows us to write "mutating" logic in reducers. It
     //   // doesn't actually mutate the state because it uses the Immer library,
@@ -89,7 +103,7 @@ export const counterSlice = createSlice({
   // },
 });
 
-export const { half, setStatusReserved, setStatusFree } = counterSlice.actions;
+export const { disableButton, enableButton, setStatusReserved, setStatusFree, setStatusBooked } = counterSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
@@ -100,7 +114,7 @@ export const reserveStatus = (state) => state.counter.reserve;
 
 
 export const reservedCards = (state) => state.counter.counters.filter((item) => {
-  if (item.status === "reserved" && item.counting === true) {
+  if (item.status === 'reserved' && item.counting === true) {
     return item;
   }
 })

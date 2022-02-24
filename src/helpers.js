@@ -9,21 +9,45 @@ export function formatingTime (prop) {
     : `${minutes < 10  ? `0${minutes}` : minutes } : ${seconds < 10 ? `0${seconds}` : seconds}`);
 }
 
-export function randomChoose () {
-  return new Promise(function (resolve, reject) {
-    setTimeout (function(){
-      const helper = Math.random().toFixed(1) * 10;
+// export function randomChoose () {
+//   return new Promise(function (resolve, reject) {
+//     setTimeout (function(){
+//       const helper = Math.random().toFixed(1) * 10;
 
-      if (helper < 5) {
-        return resolve(true)
-      }
+//       if (helper < 5) {
+//         return resolve(true)
+//       }
 
-      reject(false)
+//       reject(false)
 
-   }, 1000);      
-  });
+//    }, 1000);      
+//   });
+// }
+
+
+function simulateAsyncCall(request) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+          const room = request;
+          if (room) {
+            resolve({ status: 200, posts: room.posts });
+          } else {
+            resolve({ status: 404, message: 'Canceled' });
+          }
+    })
+  })
 }
 
+function randomChoose_1 () {
+
+  const helper = Math.random().toFixed(1) * 10;
+
+  if (helper < 5) {
+    return true;
+  }
+
+  return false;
+}
 
 // const handleBookRoom = () => {
 //   setArr(
@@ -34,7 +58,7 @@ export function randomChoose () {
 //         const id = item.id;
 //         if (res) {
 //           dispatch(setStatusBook({ id }));
-//           item.status = "booked";
+//           item.status = "sold";
 //           setReserved(reserved - 1);
 //           item.count = 0;
 //         } else {

@@ -19,8 +19,10 @@ function App() {
   const handleClick = () => {
     const reserved = state;
     setCurrentState(reserved);
-    console.log("currentState", currentState);
+
   }
+  console.log("reservedCards", state)
+  console.log("currentState", currentState);
 
   return (
     <div className='paper'>

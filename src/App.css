@@ -16,11 +16,11 @@
   justify-content: center;
 }
 .free {
-  background-color: rgb(111, 212, 86) !important;
+  background-color: rgb(112, 236, 81) !important;
 }
 .reserved {
-  background-color: yellow !important;
+  background-color: rgb(255, 255, 31) !important;
 }
-.booked {
-  background-color: crimson !important;
+.sold {
+  background-color: rgb(216, 92, 92) !important;
 }

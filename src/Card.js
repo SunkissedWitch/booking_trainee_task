@@ -13,6 +13,7 @@ import './App.css';
 import {
   allExistingCounters,
   setStatusReserved,
+  enableButton,
 } from './features/counter/counterSlice';
 
 const booking = (id) => {
@@ -39,6 +40,7 @@ export const CardBox = (props) => {
   const [startCountdown, setStartCountdown] = useState(() => booking(all[ID]));
   const onClickCall = (prop) => {
     dispatch(setStatusReserved({ID: prop}));
+    dispatch(enableButton());
     setStartCountdown(true);
     console.log("click button")
   }
