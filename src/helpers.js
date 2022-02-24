@@ -28,12 +28,12 @@ export function formatingTime (prop) {
 function simulateAsyncCall(request) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-          const room = request;
-          if (room) {
-            resolve({ status: 200, posts: room.posts });
-          } else {
-            resolve({ status: 404, message: 'Canceled' });
-          }
+        const room = request;
+        if (room) {
+          resolve({ status: 200, posts: room.posts });
+        } else {
+          resolve({ status: 404, message: 'Canceled' });
+        }
     })
   })
 }

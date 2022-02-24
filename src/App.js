@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './App.css';
 import { CardBox } from '../src/Card';
-import { boxes, reservedCards, reserveStatus } from './features/counter/counterSlice';
+import { boxes, reservedCards, reserveStatus, disableButton } from './features/counter/counterSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { SubmitButton } from './buttonSubmit';
 
@@ -14,11 +14,13 @@ function App() {
   const state = useSelector(reservedCards);
   const [ currentState, setCurrentState ] = useState(state);
   const rStatus = useSelector(reserveStatus);
+  const dispatch = useDispatch();
 
 
   const handleClick = () => {
     const reserved = state;
     setCurrentState(reserved);
+    dispatch(disableButton());
 
   }
   console.log("reservedCards", state)
