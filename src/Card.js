@@ -16,6 +16,16 @@ import {
   enableButton,
 } from './features/counter/counterSlice';
 
+// const booking = (id) => {
+//   if (!id || !id.counting) {
+//     // console.log("hide")
+//     return false;
+//   }
+//   // console.log("show")
+//   return true;
+// }
+
+
 const booking = (id) => {
   if (!id || !id.counting) {
     // console.log("hide")
@@ -36,8 +46,9 @@ export const CardBox = (props) => {
   console.log(`${currentID.id}`, currentID);
 
   const cardColor = currentID.status;
+  let posibility = cardColor === "sold" ? "Sold!" : <Button variant="outlined" onClick={() => onClickCall(ID)}>Book now</Button>
   
-  const [startCountdown, setStartCountdown] = useState(() => booking(all[ID]));
+  const [startCountdown, setStartCountdown] = useState(() => booking(currentID));
   const onClickCall = (prop) => {
     dispatch(setStatusReserved({ID: prop}));
     dispatch(enableButton());
@@ -56,7 +67,7 @@ export const CardBox = (props) => {
       {
         startCountdown
           ? <CoundownTimer ID={ID} />
-          : <Button variant="outlined" onClick={() => onClickCall(ID)}>Book now</Button>
+          : posibility
       }
     </CardContent> 
   </Card>

@@ -1,11 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { fetchStatus } from './counterAPI';
+import { fetchStatus, simulateAsyncCall } from './counterAPI';
 const SECONDS = 30;
 
 export const boxes = Array.from(
   Array(9), (_, i) => ( {
     id: i,
-    status: 'free'} ));
+    status: 'free',
+    time: 0, 
+    counting: false}
+  ));
 
 const initialState = {
   counters: boxes,
@@ -29,7 +32,12 @@ export const counterSlice = createSlice({
   name: 'counter',
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
-  reducers: {
+    // Redux Toolkit allows us to write "mutating" logic in reducers. It
+    // doesn't actually mutate the state because it uses the Immer library,
+    // which detects changes to a "draft state" and produces a brand new
+    // immutable state based off those changes  
+
+    reducers: {
 
     setStatusReserved: (state, action) => {
       const counterId = action.payload.ID;
@@ -53,7 +61,7 @@ export const counterSlice = createSlice({
         status: 'free'
       };
 
-      state.reserve = false;
+      // state.reserve = false;
     },
 
     setStatusBooked: (state, action) => {
@@ -73,12 +81,10 @@ export const counterSlice = createSlice({
 
     disableButton: (state) => {
       state.reserve = false;
-    }
+    } 
+
+
     // increment: (state) => {
-    //   // Redux Toolkit allows us to write "mutating" logic in reducers. It
-    //   // doesn't actually mutate the state because it uses the Immer library,
-    //   // which detects changes to a "draft state" and produces a brand new
-    //   // immutable state based off those changes
     //   state.value += 1;
     // },
     // decrement: (state) => {

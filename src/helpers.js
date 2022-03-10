@@ -9,6 +9,18 @@ export function formatingTime (prop) {
     : `${minutes < 10  ? `0${minutes}` : minutes } : ${seconds < 10 ? `0${seconds}` : seconds}`);
 }
 
+
+export function randomChoose () {
+
+  const helper = Math.random().toFixed(1) * 10;
+
+  if (helper < 5) {
+    return true;
+  }
+
+  return false;
+}
+
 // export function randomChoose () {
 //   return new Promise(function (resolve, reject) {
 //     setTimeout (function(){
@@ -24,30 +36,6 @@ export function formatingTime (prop) {
 //   });
 // }
 
-
-function simulateAsyncCall(request) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-        const room = request;
-        if (room) {
-          resolve({ status: 200, posts: room.posts });
-        } else {
-          resolve({ status: 404, message: 'Canceled' });
-        }
-    })
-  })
-}
-
-function randomChoose_1 () {
-
-  const helper = Math.random().toFixed(1) * 10;
-
-  if (helper < 5) {
-    return true;
-  }
-
-  return false;
-}
 
 // const handleBookRoom = () => {
 //   setArr(

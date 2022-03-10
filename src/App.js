@@ -1,30 +1,55 @@
 import React, { useState } from 'react';
 import './App.css';
 import { CardBox } from '../src/Card';
-import { boxes, reservedCards, reserveStatus, disableButton } from './features/counter/counterSlice';
+import { 
+  boxes,
+  reservedCards, 
+  reserveStatus, 
+  disableButton, 
+  setStatusFree, 
+  setStatusBooked 
+} from './features/counter/counterSlice';
+
 import { useSelector, useDispatch } from 'react-redux';
 import { SubmitButton } from './buttonSubmit';
 
 import { randomChoose } from "./helpers";
 import { Button } from '@mui/material';
+import { simulateAsyncCall } from './features/counter/counterAPI';
 
 
 function App() {
-  
-  const state = useSelector(reservedCards);
-  const [ currentState, setCurrentState ] = useState(state);
-  const rStatus = useSelector(reserveStatus);
   const dispatch = useDispatch();
+  const state = useSelector(reservedCards);
+  const rStatus = useSelector(reserveStatus);
 
 
-  const handleClick = () => {
-    const reserved = state;
-    setCurrentState(reserved);
-    dispatch(disableButton());
-
+  const setStatus = (arr) => {
+    return arr.map((item) => {
+      if(item.status === 200){
+        dispatch(setStatusBooked({ID: item.id}))
+        console.log("success", item.id); 
+        return {id: item.id, status: "sold"}
+      }
+      dispatch(setStatusFree({ID: item.id}));
+      console.log("canceled", item.id);
+      return {id: item.id, status: "free"};
+    })
   }
-  console.log("reservedCards", state)
-  console.log("currentState", currentState);
+
+  const handleClick = async () => {
+
+    dispatch(disableButton());
+    const response = await simulateAsyncCall(state);
+    console.log("response", response);
+
+    if (response.length === 0) {
+      console.log("response is empty");
+      return;
+    }
+    setStatus(response);
+    console.log(setStatus(response));
+  }
 
   return (
     <div className='paper'>
