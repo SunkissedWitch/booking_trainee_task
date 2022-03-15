@@ -23,10 +23,5 @@ const store = configureStore({
   middleware: [thunk],
 });
 
-// const persistConfig = {
-//   key: 'root',
-//   storage: storage,
-//   whitelist: ['navigation'], // only navigation will be persisted
-// };
 
 export default store;

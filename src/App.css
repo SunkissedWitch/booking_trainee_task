@@ -15,6 +15,13 @@
 
   justify-content: center;
 }
+
+.right-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .free {
   background-color: rgb(112, 236, 81) !important;
 }

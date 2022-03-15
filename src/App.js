@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import { CardBox } from '../src/Card';
+import { ErrorAlert } from './errorsAlert';
+import { SubmitButton } from './buttonSubmit';
+import { Button, Stack } from '@mui/material';
+
 import { 
   boxes,
   reservedCards, 
@@ -11,10 +15,6 @@ import {
 } from './features/counter/counterSlice';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { SubmitButton } from './buttonSubmit';
-
-import { randomChoose } from "./helpers";
-import { Button } from '@mui/material';
 import { simulateAsyncCall } from './features/counter/counterAPI';
 
 
@@ -22,48 +22,71 @@ function App() {
   const dispatch = useDispatch();
   const state = useSelector(reservedCards);
   const rStatus = useSelector(reserveStatus);
+  const [ roomStatus, setRoomStatus ] = useState([]);
+  const [ open, setOpen ] = useState(false);
 
 
   const setStatus = (arr) => {
     return arr.map((item) => {
       if(item.status === 200){
         dispatch(setStatusBooked({ID: item.id}))
-        console.log("success", item.id); 
-        return {id: item.id, status: "sold"}
+        return {id: item.id, status: "success"}
       }
       dispatch(setStatusFree({ID: item.id}));
-      console.log("canceled", item.id);
-      return {id: item.id, status: "free"};
+      setOpen(true);
+      return {id: item.id, status: "error"};
     })
   }
+
 
   const handleClick = async () => {
 
     dispatch(disableButton());
     const response = await simulateAsyncCall(state);
-    console.log("response", response);
 
     if (response.length === 0) {
-      console.log("response is empty");
       return;
     }
-    setStatus(response);
-    console.log(setStatus(response));
+    const result = setStatus(response);
+    setRoomStatus(result);
+
   }
 
+  const errors = roomStatus.filter((item) => {
+    if (item.status === "error") {
+      return item.id
+    }
+  });
+
+
+  useEffect(()=> {
+    if (errors.length !== 0 && open === true) {
+      setTimeout(() => setOpen(false), 6000);
+      return;
+    }
+    return;
+  }, [roomStatus])
+
+
   return (
+
     <div className='paper'>
       <div className='frame'>
         {boxes.map((item, index) => <CardBox key={index} item={item.id} />)}
       </div>
 
-      <div>
+      <Stack spacing={2}>
+        <div>{errors.length !== 0 && <ErrorAlert errors={errors} open={open}/>}</div>
+
+        <div>
         {
-          rStatus 
+          rStatus && state.length > 0
             ? <SubmitButton handleClick={() => handleClick()} />
             : <Button variant="contained" size="large" disabled> Submit </Button>
-        }
-      </div>
+        }          
+        </div>
+      </Stack>
+
     </div>
   );
 }

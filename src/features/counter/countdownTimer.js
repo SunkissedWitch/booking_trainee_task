@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   allExistingCounters,
   setStatusFree,
-} from '../../features/counter/counterSlice';
+} from './counterSlice';
 import { Typography } from "@mui/material";
 
 
@@ -19,23 +19,23 @@ export function CoundownTimer(props) {
   const difference = currentID ? currentID.time - now : 0;
   const isTrue = difference > 0 ? true : false;
 
-  
-
   const [counter, setCounter] = useState(Math.floor(difference/1000));
   const [startCountdown, setStartCountdown] = useState(isTrue);
   
   useEffect(() => {
     if (counter <= 0 || currentID.counting === false) {
+
       if (currentID.status === "reserved") {
-        console.log("yes!")
-      dispatch(setStatusFree({ID: ID}));    
+      setTimeout(() => dispatch(setStatusFree({ID: ID})), 1000);    
       }
-      console.log("stop count");
+
       setStartCountdown(false);
       return;
     }
+
     const timer = counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
     return () => clearInterval(timer);
+
   }, [counter, startCountdown]); 
 
   return (

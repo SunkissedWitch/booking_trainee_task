@@ -1,59 +1,60 @@
 import React, { useState, useEffect } from 'react';
+import './App.css';
 import { CoundownTimer } from "./features/counter/countdownTimer.js";
 import { useSelector, useDispatch } from 'react-redux';
 import { 
   Card,
   CardContent, 
   Button, 
-  CardHeader 
+  CardHeader,
+  CircularProgress 
 } from '@mui/material';
-
-import './App.css';
-
 import {
   allExistingCounters,
   setStatusReserved,
   enableButton,
+  reserveStatus
 } from './features/counter/counterSlice';
-
-// const booking = (id) => {
-//   if (!id || !id.counting) {
-//     // console.log("hide")
-//     return false;
-//   }
-//   // console.log("show")
-//   return true;
-// }
-
-
-const booking = (id) => {
-  if (!id || !id.counting) {
-    // console.log("hide")
-    return false;
-  }
-  // console.log("show")
-  return true;
-}
 
 
 export const CardBox = (props) => {
   const { item: ID } = props;
-
+  
   const dispatch = useDispatch();
   const all = useSelector(allExistingCounters);
-  const currentID = all[ID];
+  const buttonStatus = useSelector(reserveStatus);
 
-  console.log(`${currentID.id}`, currentID);
+  const currentID = all[ID];
+  const [startCountdown, setStartCountdown] = useState(currentID.counting);
 
   const cardColor = currentID.status;
-  let posibility = cardColor === "sold" ? "Sold!" : <Button variant="outlined" onClick={() => onClickCall(ID)}>Book now</Button>
+
+  const render = () => {
+    if (cardColor === "sold") {
+      return "Sold!" 
+    }
+    if (cardColor === "free") {
+      return <Button variant="outlined" onClick={() => onClickCall(ID)}>Book now</Button>
+    }
+    if (cardColor === "reserved" && buttonStatus === false) {
+      return <CircularProgress /> 
+    }
+    if (cardColor === "reserved" && buttonStatus === true) {
+      return <CoundownTimer ID={ID} />
+    }
+  }
+
+  useEffect(() => {
+    if (cardColor === "sold" || "free") {
+      setStartCountdown(currentID.counting);
+    }
+  }, [cardColor, startCountdown])
   
-  const [startCountdown, setStartCountdown] = useState(() => booking(currentID));
+
   const onClickCall = (prop) => {
     dispatch(setStatusReserved({ID: prop}));
     dispatch(enableButton());
     setStartCountdown(true);
-    console.log("click button")
   }
   
   return (
@@ -64,11 +65,7 @@ export const CardBox = (props) => {
     </CardHeader>
 
     <CardContent sx={{ textAlign: 'center' }}>
-      {
-        startCountdown
-          ? <CoundownTimer ID={ID} />
-          : posibility
-      }
+      {render()}
     </CardContent> 
   </Card>
   )

@@ -1,12 +1,5 @@
 import { randomChoose } from "../../helpers";
 
-// A mock function to mimic making an async request for data
-// export function fetchStatus(response = "accepted") {
-//   return new Promise((resolve) =>
-//     setTimeout(() => resolve({ data: response }), 500)
-//   );
-// }
-
 
 export async function simulateAsyncCall(request) {
   const resultPromises = request.map(
@@ -18,7 +11,7 @@ export async function simulateAsyncCall(request) {
           } else {
             resolve({ status: 404, message: "cancel", id: item.id });
           }
-        });
+        }, 1500);
       });
       return resultPromise;
     })
